@@ -59,7 +59,7 @@ class TicketControllerTest {
         var view = controller.buyTickedPlace(model, filmSession.getId());
         var actualMessage = model.getAttribute("message");
 
-        assertThat(view).isEqualTo("error/404");
+        assertThat(view).isEqualTo("redirect:/error/404");
         assertThat(actualMessage).isEqualTo("Что-то пошло не так.");
     }
 
@@ -77,7 +77,7 @@ class TicketControllerTest {
         var view = controller.saveTicket(ticket, model);
         var actualMessage = model.getAttribute("message");
 
-        assertThat(view).isEqualTo("ticket/buy");
+        assertThat(view).isEqualTo("redirect:/error/404");
         assertThat(actualMessage).isEqualTo(message);
     }
 
