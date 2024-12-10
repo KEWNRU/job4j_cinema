@@ -1,8 +1,11 @@
 package ru.job4j.repository.ticket;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import org.sql2o.Sql2oException;
 import ru.job4j.model.Ticket;
 
 import java.util.Optional;
@@ -10,6 +13,7 @@ import java.util.Optional;
 @Repository
 public class Sql2oTicketRepository implements TicketRepository {
 
+    private static final Logger LOG = LogManager.getLogger(Sql2oTicketRepository.class.getName());
     private final Sql2o sql2o;
 
     public Sql2oTicketRepository(Sql2o sql2o) {
@@ -30,9 +34,13 @@ public class Sql2oTicketRepository implements TicketRepository {
             query.addParameter("userId", ticket.getUserId());
             int tickets = query.executeUpdate().getKey(Integer.class);
             ticket.setId(tickets);
-            return Optional.of(ticket);
+            return Optional.ofNullable(ticket);
+        } catch (Sql2oException ex) {
+            LOG.error(ex);
         }
+        return Optional.empty();
     }
+
 
     @Override
     public Optional<Ticket> findById(int id) {
