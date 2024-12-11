@@ -34,7 +34,7 @@ public class Sql2oTicketRepository implements TicketRepository {
             query.addParameter("userId", ticket.getUserId());
             int tickets = query.executeUpdate().getKey(Integer.class);
             ticket.setId(tickets);
-            return Optional.ofNullable(ticket);
+            return Optional.of(ticket);
         } catch (Sql2oException ex) {
             LOG.error(ex);
         }
